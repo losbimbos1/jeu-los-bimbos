@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu Los Bimbos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffe6f2;
+            color: #000;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #wheel {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #ff69b4 0% 25%, 
+                #ffb6c1 25% 50%, 
+                #ff69b4 50% 75%, 
+                #ffb6c1 75% 100%
+            );
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            transform: rotate(0deg);
+            transition: transform 3s ease-out;
+            position: relative;
+            border: 5px dotted #ff69b4;
+        }
+        .indicator {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+        }
+        .prizes {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff69b4;
+        }
+        .farewell {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="avisSection">
+        <h2>Donne ton avis sur Los Bimbos !</h2>
+        <button onclick="laisserAvis()">Laisser un avis sur Google</button>
+        <button id="confirmAvis" onclick="enregistrerAvis()" style="display: none;">J'ai laissé un avis</button>
+    </div>
+    
+    <div class="container" id="tombolaSection" style="display: none;">
+        <h2>Participation à la tombola</h2>
+        <div class="indicator">▼</div>
+        <div id="wheel">🎰</div>
+        <div class="prizes">🍹🥔🧀🌮</div>
+        <button onclick="lancerTombola()">Lancer la roue</button>
+        <p id="resultat"></p>
+        <p class="farewell" id="farewellMessage" style="display: none;">Merci d'avoir participé ! À bientôt chez Los Bimbos ! 🎉</p>
+    </div>
+
+    <script>
+        function laisserAvis() {
+            setTimeout(() => {
+                window.open("https://g.page/r/CSYPUFnOX_W3EBM/review", "_blank");
+                document.getElementById("confirmAvis").style.display = "block";
+            }, 500);
+        }
+        
+        function enregistrerAvis() {
+            localStorage.setItem("avisLosBimbos", "avis");
+            document.getElementById("avisSection").style.display = "none";
+            document.getElementById("tombolaSection").style.display = "block";
+        }
+
+        function lancerTombola() {
+            let wheel = document.getElementById("wheel");
+            let prix = [
+                "1 boisson gratuite!",
+                "1 portion de frites!",
+                "1 portion de frites avec sauce Emmental!",
+                "1 tacos small gratuit!"
+            ];
+            let rotation = Math.floor(Math.random() * 360) + 720;
+            wheel.style.transform = `rotate(${rotation}deg)`;
+            setTimeout(() => {
+                let gagnant = prix[Math.floor(Math.random() * prix.length)];
+                document.getElementById("resultat").innerText = "🎉 Félicitations ! Tu as gagné : " + gagnant;
+                document.getElementById("farewellMessage").style.display = "block";
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
